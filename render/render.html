@@ -8,7 +8,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+    <!--background-->
     <div class="stars"></div>
+    <!--lock page-->
     <div id="lock-screen" class="container active lock">
         <div class="form-control">
             <input type="password" required="" id="password">
@@ -20,11 +22,19 @@
         <button onclick="unlock()">Unlock</button>
         <p id="error-message" style="color:red; display:none; font-size: 20px;">Incorrect password >< </p>
     </div>
-
+    <!--unlock page-->
     <div id="content" class="container unlock">
         <h1 style="color: #888282;">Welcome to the protected content!</h1>
         <p style="color: #888282;">This is the hidden content that only displays after the correct password is entered.</p>
+        
+        <!-- Chat Section -->
+        <div id="chatbox" class="chatbox">
+            <div id="messages" class="messages"></div>
+            <input type="text" id="chat-input" placeholder="Type a message..." />
+            <button id="send-message">Send</button>
+        </div>
     </div>
+    
 
     <script src="render.js"></script>
 </body>
