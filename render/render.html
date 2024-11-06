@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="render.css">
+    <title>A Page?</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="stars"></div>
+    <div id="lock-screen" class="container active lock">
+        <div class="form-control">
+            <input type="password" required="" id="password">
+            <label>
+                <span style="transition-delay:0ms">P</span><span style="transition-delay:50ms">a</span><span style="transition-delay:100ms">s</span><span style="transition-delay:150ms">s</span><span style="transition-delay:200ms">w</span><span style="transition-delay:250ms">o</span><span style="transition-delay:300ms">r</span><span style="transition-delay:350ms">d</span>
+                <span style="transition-delay:400ms">(</span><span style="transition-delay:400ms">b</span><span style="transition-delay:400ms">i</span><span style="transition-delay:350ms">r</span><span style="transition-delay:300ms">t</span><span style="transition-delay:250ms">h</span><span style="transition-delay:200ms">d</span><span style="transition-delay:150ms">a</span><span style="transition-delay:100ms">y</span><span style="transition-delay:50ms">)</span>
+            </label>
+        </div>
+        <button onclick="unlock()">Unlock</button>
+        <p id="error-message" style="color:red; display:none; font-size: 20px;">Incorrect password >< </p>
+    </div>
+
+    <div id="content" class="container unlock">
+        <h1 style="color: #888282;">Welcome to the protected content!</h1>
+        <p style="color: #888282;">This is the hidden content that only displays after the correct password is entered.</p>
+    </div>
+
+    <script src="render.js"></script>
+</body>
+</html>
