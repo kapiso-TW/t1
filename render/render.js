@@ -82,7 +82,7 @@ async function sendMessage() {
     }
 }
 
-// 加载消息并设置定时刷新
+// 加载消息并设置定时刷新 
 loadMessages();
 setInterval(loadMessages, 5000);  // 每5秒刷新一次消息列表
 
