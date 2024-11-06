@@ -8,21 +8,41 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 app.use(express.static('public'));
+app.use(express.json());
 
 // 存储聊天历史
 let chatHistory = [];
 
+// 处理获取消息
+app.get('/api/messages', (req, res) => {
+    res.json(chatHistory);  // 返回聊天历史
+});
+
+// 处理发送消息
+app.post('/api/messages', (req, res) => {
+    const { message } = req.body;
+    if (message) {
+        const msg = { id: Date.now().toString(), text: message };
+        chatHistory.push(msg);  // 将消息保存到历史中
+        io.emit('chatMessage', msg);  // 广播新消息
+        res.status(200).send('Message sent');
+    } else {
+        res.status(400).send('No message provided');
+    }
+});
+
+// 监听socket连接
 io.on('connection', (socket) => {
     console.log('a user connected');
-
+    
     // 发送历史消息
     socket.emit('chatHistory', chatHistory);
 
     // 监听新的消息
     socket.on('chatMessage', (message) => {
         const msg = { id: Date.now().toString(), text: message };
-        chatHistory.push(msg);
-        io.emit('chatMessage', msg); // 广播新消息
+        chatHistory.push(msg);  // 将消息保存到历史中
+        io.emit('chatMessage', msg);  // 广播新消息
     });
 
     // 监听撤回消息
