@@ -28,16 +28,65 @@
         <p style="color: #888282;">This is the hidden content that only displays after the correct password is entered.</p>
         
         <!-- Chat Section -->
-        <div id="chatbox" class="chatbox">
-            <div id="messages" class="messages"></div>
-            <input type="text" id="chat-input" placeholder="Type a message..." />
-            <button id="send-message">Send</button>
+        <div class="chatbox">
+            <div id="chatBox" class="messages"></div>
+            <input type="text" id="messageInput" placeholder="Type a message..." />
+            <button id="sendButton">Send</button>
         </div>
     </div>
     
 
     <script src="render.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        // 获取页面元素
+        const chatBox = document.getElementById('chatBox');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+
+        // 显示历史聊天记录
+        socket.on('chatHistory', (history) => {
+            history.forEach(msg => addMessage(msg));
+        });
+
+        // 监听新的聊天消息
+        socket.on('chatMessage', (msg) => {
+            addMessage(msg);
+        });
+
+        // 监听消息撤回事件
+        socket.on('retractMessage', (messageId) => {
+            const msgElement = document.getElementById(messageId);
+            if (msgElement) {
+                msgElement.textContent = '此消息已被撤回';
+            }
+        });
+
+        // 发送消息
+        sendButton.addEventListener('click', () => {
+            const message = messageInput.value;
+            if (message) {
+                socket.emit('chatMessage', message);
+                messageInput.value = '';
+            }
+        });
+
+        // 将消息添加到聊天框
+        function addMessage(msg) {
+            const messageWrapper = document.createElement('div');
+            messageWrapper.id = msg.id;
+            messageWrapper.innerHTML = `${msg.text} <button onclick="retractMessage('${msg.id}')">撤回</button>`;
+            chatBox.appendChild(messageWrapper);
+            chatBox.scrollTop = chatBox.scrollHeight; // 自动滚动到最新消息
+        }
+
+        // 撤回消息函数
+        function retractMessage(messageId) {
+            socket.emit('retractMessage', messageId);
+        }
+    </script>
 </body>
 </html>
 

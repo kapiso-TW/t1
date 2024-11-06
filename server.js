@@ -1,63 +1,60 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
-const path = require('path');
+const { v4: uuidv4 } = require('uuid'); // 用于生成唯一 ID
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
+let chatHistory = []; // 保存聊天记录
+let userCount = 1; // 用于生成用户昵称
+const userIPs = {}; // 存储 IP 地址到昵称的映射
+
 app.use(express.static('public'));
-app.use(express.json());
 
-// 存储聊天历史
-let chatHistory = [];
-
-// 处理获取消息
-app.get('/api/messages', (req, res) => {
-    res.json(chatHistory);  // 返回聊天历史
-});
-
-// 处理发送消息
-app.post('/api/messages', (req, res) => {
-    const { message } = req.body;
-    if (message) {
-        const msg = { id: Date.now().toString(), text: message };
-        chatHistory.push(msg);  // 将消息保存到历史中
-        io.emit('chatMessage', msg);  // 广播新消息
-        res.status(200).send('Message sent');
-    } else {
-        res.status(400).send('No message provided');
-    }
-});
-
-// 监听socket连接
+// 当有新用户连接时
 io.on('connection', (socket) => {
-    console.log('a user connected');
-    
-    // 发送历史消息
+    // 通过 socket.request 获取用户的 IP 地址
+    const userIp = socket.request.headers['x-forwarded-for'] || socket.request.connection.remoteAddress;
+    console.log(userIPs);
+    let nickname;
+
+    // 检查用户 IP 地址是否已有昵称
+    if (userIPs[userIp]) {
+        nickname = userIPs[userIp];
+    } else {
+        // 分配新的昵称并记录
+        nickname = `User ${userCount++}`;
+        userIPs[userIp] = nickname;
+    }
+
+    console.log(`${nickname} (${userIp}) 已连接`);
+
+    // 将历史聊天记录发送给新用户
     socket.emit('chatHistory', chatHistory);
 
-    // 监听新的消息
-    socket.on('chatMessage', (message) => {
-        const msg = { id: Date.now().toString(), text: message };
-        chatHistory.push(msg);  // 将消息保存到历史中
-        io.emit('chatMessage', msg);  // 广播新消息
+    // 监听用户发送的消息
+    socket.on('chatMessage', (msg) => {
+        const messageId = uuidv4(); // 生成唯一的消息 ID
+        const userMessage = { id: messageId, text: `${nickname}: ${msg}` };
+        chatHistory.push(userMessage); // 保存聊天记录
+        io.emit('chatMessage', userMessage); // 广播消息
     });
 
-    // 监听撤回消息
+    // 监听用户撤回消息请求
     socket.on('retractMessage', (messageId) => {
-        chatHistory = chatHistory.filter(msg => msg.id !== messageId); // 移除历史记录中的消息
-        io.emit('retractMessage', messageId); // 通知所有客户端撤回消息
+        // 查找消息并从历史记录中删除
+        chatHistory = chatHistory.filter(message => message.id !== messageId);
+        // 通知所有客户端更新聊天记录
+        io.emit('retractMessage', messageId);
     });
 
-    // 断开连接时的清理
     socket.on('disconnect', () => {
-        console.log('user disconnected');
+        console.log(`${nickname} (${userIp}) 已断开连接`);
     });
 });
 
-// 启动服务器
 server.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000');
+    console.log('服务器运行在 http://localhost:3000');
 });
