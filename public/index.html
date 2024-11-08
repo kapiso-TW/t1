@@ -15,7 +15,7 @@
     <!--lock page-->
     <div id="lock-screen" class="container active lock">
         <div class="form-control">
-            <input type="password" required="" id="password">
+                <input type="password" required="" id="password">
             <label>
                 <span style="transition-delay:0ms">P</span><span style="transition-delay:50ms">a</span><span
                     style="transition-delay:100ms">s</span><span style="transition-delay:150ms">s</span><span
@@ -29,7 +29,7 @@
             </label>
         </div>
         <button onclick="unlock()" class="ubt">Unlock</button>
-        <p id="error-message" style="color:red; display:none; font-size: 20px;">Incorrect password >< </p>
+        <p id="error-message" style="color:rgb(255, 100, 100); display:none; font-size: 20px;">Incorrect password >< </p>
     </div>
     <!--unlock page-->
     <div style="display: flex; justify-content: center; align-items: center;">
@@ -98,11 +98,31 @@
         function addMessage(msg) {
             const messageWrapper = document.createElement('div');
             messageWrapper.id = msg.id;
-            messageWrapper.style = 'display: flex; gap: 30px; align-items: center; justify-content: center'
-            messageWrapper.innerHTML = `${msg.text} <button class="button" onclick="retractMessage('${msg.id}')"><svg viewBox="0 0 448 512" class="svgIcon"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path></svg></button>`;
+            messageWrapper.style = 'display: flex; gap: 10px; align-items: center; justify-content: center; margin-bottom: 10px;';
+
+            // set mes
+            const messageContent = document.createElement('span');
+            messageContent.style = 'font-size: 20px; colorr: white;'
+            messageContent.textContent = msg.text;
+
+            // set del btn
+            const deleteButton = document.createElement('button');
+            deleteButton.className = 'button';
+            deleteButton.style = 'background: none; border: none; cursor: pointer; color: #ff0000; display: flex; align-items: center;';
+            deleteButton.innerHTML = `<svg viewBox="0 0 448 512" class="svgIcon" style="width: 20px; height: 20px; fill: currentColor;">
+                                <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
+                              </svg>`;
+            deleteButton.onclick = () => retractMessage(msg.id); // set del btn event
+
+            // add mes and btn
+            messageWrapper.appendChild(messageContent);
+            messageWrapper.appendChild(deleteButton);
+
+            // rolling to the newest
             chatBox.appendChild(messageWrapper);
-            chatBox.scrollTop = chatBox.scrollHeight; // rolling to newest
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
+
     </script>
 </body>
 
