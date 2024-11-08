@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <title>A Page?</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
     <!--background-->
     <div class="stars"></div>
@@ -15,8 +17,15 @@
         <div class="form-control">
             <input type="password" required="" id="password">
             <label>
-                <span style="transition-delay:0ms">P</span><span style="transition-delay:50ms">a</span><span style="transition-delay:100ms">s</span><span style="transition-delay:150ms">s</span><span style="transition-delay:200ms">w</span><span style="transition-delay:250ms">o</span><span style="transition-delay:300ms">r</span><span style="transition-delay:350ms">d</span>
-                <span style="transition-delay:400ms">(</span><span style="transition-delay:400ms">b</span><span style="transition-delay:400ms">i</span><span style="transition-delay:350ms">r</span><span style="transition-delay:300ms">t</span><span style="transition-delay:250ms">h</span><span style="transition-delay:200ms">d</span><span style="transition-delay:150ms">a</span><span style="transition-delay:100ms">y</span><span style="transition-delay:50ms">)</span>
+                <span style="transition-delay:0ms">P</span><span style="transition-delay:50ms">a</span><span
+                    style="transition-delay:100ms">s</span><span style="transition-delay:150ms">s</span><span
+                    style="transition-delay:200ms">w</span><span style="transition-delay:250ms">o</span><span
+                    style="transition-delay:300ms">r</span><span style="transition-delay:350ms">d</span>
+                <span style="transition-delay:400ms">(</span><span style="transition-delay:400ms">b</span><span
+                    style="transition-delay:400ms">i</span><span style="transition-delay:350ms">r</span><span
+                    style="transition-delay:300ms">t</span><span style="transition-delay:250ms">h</span><span
+                    style="transition-delay:200ms">d</span><span style="transition-delay:150ms">a</span><span
+                    style="transition-delay:100ms">y</span><span style="transition-delay:50ms">)</span>
             </label>
         </div>
         <button onclick="unlock()">Unlock</button>
@@ -26,15 +35,17 @@
     <div id="content" class="container unlock">
         <h1 style="color: #888282;">Chat pannel</h1>
         <p style="color: #888282;">---</p>
-        
+
         <!-- Chat Section -->
         <div class="chatbox">
             <div id="chatBox" class="messages"></div>
-            <input type="text" id="messageInput" placeholder="Type a message..." />
+            <div class="textInputWrapper">
+                <input placeholder="Type Here" type="text" class="textInput" id="messageInput">
+            </div>
             <button id="sendButton">Send</button>
         </div>
     </div>
-    
+
 
     <script src="render.js"></script>
     <script src="/socket.io/socket.io.js"></script>
@@ -88,5 +99,5 @@
         }
     </script>
 </body>
-</html>
 
+</html>
