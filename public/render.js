@@ -2,6 +2,7 @@
 const publicHash = "2f1987bf98c09d2f5d2a23a6ae29fa53b9aec8f07ed1330bd439122f5a1a2c2c";
 const reusableHash = "a7a39b72f29718e653e73503210fbb597057b7a1c77d1fe321a1afcff041d4e1";
 
+/* hash password generate */
 async function hashPassword(password) {
     const encoder = new TextEncoder();
     const data = encoder.encode(password);
@@ -10,6 +11,7 @@ async function hashPassword(password) {
     return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+/* unlock page */
 async function unlock() {
     const passwordInput = document.getElementById("password").value;
     const errorMessage = document.getElementById("error-message");
@@ -30,6 +32,7 @@ async function unlock() {
     }
 }
 
+/* def delay */
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }

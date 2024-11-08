@@ -48,7 +48,7 @@ body {
     }
 }
 
-/*password*/
+/* password */
 .form-control {
     position: relative;
     margin: 20px 0 40px;
@@ -93,7 +93,7 @@ body {
     transform: translateY(-30px);
 }
 
-/*button*/
+/* button */
 button {
     width: 100px;
     height: 45px;
@@ -170,4 +170,3 @@ button:active {
     transform: scale(0.95);
     transition: 0.1s;
 }
-
