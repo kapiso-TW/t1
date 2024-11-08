@@ -32,18 +32,20 @@
         <p id="error-message" style="color:red; display:none; font-size: 20px;">Incorrect password >< </p>
     </div>
     <!--unlock page-->
-    <div id="content" class="container unlock">
-        <h1 style="color: #888282;">Chat pannel</h1>
-        <p style="color: #888282;">---</p>
-
-        <!-- Chat Section -->
-        <div class="chatbox">
-            <div id="chatBox" class="messages"></div>
-            <div style="display: flex; gap: 30px;">
-                <div class="textInputWrapper">
-                    <input placeholder="Type Here" type="text" class="textInput" id="messageInput">
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <div id="content" class="container unlock">
+            <h1 style="color: #888282;">Chat pannel</h1>
+            <p style="color: #888282;">---</p>
+    
+            <!-- Chat Section -->
+            <div class="chatbox" style="transform: translateX(-10%);">
+                <div id="chatBox" class="messages"></div>
+                <div style="display: flex; justify-content: center; gap: 30px;">
+                    <div class="textInputWrapper">
+                        <input placeholder="Type Here" type="text" class="textInput" id="messageInput">
+                    </div>
+                    <button id="sendButton" style="margin-top: 10px;">Send</button>
                 </div>
-                <button id="sendButton" style="margin-top: 10px;">Send</button>
             </div>
         </div>
     </div>
@@ -54,30 +56,30 @@
     <script>
         const socket = io();
 
-        // 获取页面元素
+        // get element
         const chatBox = document.getElementById('chatBox');
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
 
-        // 显示历史聊天记录
+        // update history on screen
         socket.on('chatHistory', (history) => {
             history.forEach(msg => addMessage(msg));
         });
 
-        // 监听新的聊天消息
+        // listen new mes
         socket.on('chatMessage', (msg) => {
             addMessage(msg);
         });
 
-        // 监听消息撤回事件
+        // listen mes del
         socket.on('retractMessage', (messageId) => {
             const msgElement = document.getElementById(messageId);
             if (msgElement) {
-                msgElement.textContent = '此消息已被撤回';
+                msgElement.textContent = 'already del';
             }
         });
 
-        // 发送消息
+        // send mes
         sendButton.addEventListener('click', () => {
             const message = messageInput.value;
             if (message) {
@@ -86,16 +88,16 @@
             }
         });
 
-        // 将消息添加到聊天框
+        // add new mes on screen
         function addMessage(msg) {
             const messageWrapper = document.createElement('div');
             messageWrapper.id = msg.id;
             messageWrapper.innerHTML = `${msg.text} <button onclick="retractMessage('${msg.id}')">撤回</button>`;
             chatBox.appendChild(messageWrapper);
-            chatBox.scrollTop = chatBox.scrollHeight; // 自动滚动到最新消息
+            chatBox.scrollTop = chatBox.scrollHeight; // rolling to newest
         }
 
-        // 撤回消息函数
+        // def del 
         function retractMessage(messageId) {
             socket.emit('retractMessage', messageId);
         }
