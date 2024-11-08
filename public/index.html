@@ -36,7 +36,7 @@
         <div id="content" class="container unlock">
             <h1 style="color: #888282;">Chat pannel</h1>
             <p style="color: #888282;">---</p>
-    
+
             <!-- Chat Section -->
             <div class="chatbox" style="transform: translateX(-10%);">
                 <div id="chatBox" class="messages"></div>
@@ -44,7 +44,11 @@
                     <div class="textInputWrapper">
                         <input placeholder="Type Here" type="text" class="textInput" id="messageInput">
                     </div>
-                    <button id="sendButton" style="margin-top: 10px;" class="btn">Send</button>
+                    <div>
+                        <button id="sendButton" style="margin-top: 10px;" class="btn"><i class="animation"></i>Send<i
+                                class="animation"></i>
+                        </button>
+                    </div>
 
                 </div>
             </div>
@@ -54,5 +58,51 @@
 
     <script src="render.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        // get element
+        const chatBox = document.getElementById('chatBox');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+
+
+        // update history on screen
+        socket.on('chatHistory', (history) => {
+            history.forEach(msg => addMessage(msg));
+        });
+
+        // listen new mes
+        socket.on('chatMessage', (msg) => {
+            addMessage(msg);
+        });
+
+        // listen mes del
+        socket.on('retractMessage', (messageId) => {
+            const msgElement = document.getElementById(messageId);
+            if (msgElement) {
+                msgElement.textContent = 'already del';
+            }
+        });
+
+        // send mes
+        sendButton.addEventListener('click', () => {
+            const message = messageInput.value;
+            if (message) {
+                socket.emit('chatMessage', message);
+                messageInput.value = '';
+            }
+        });
+
+        // add new mes on screen
+        function addMessage(msg) {
+            const messageWrapper = document.createElement('div');
+            messageWrapper.id = msg.id;
+            messageWrapper.innerHTML = `${msg.text} <button onclick="retractMessage('${msg.id}')" class="">撤回</button>`;
+            chatBox.appendChild(messageWrapper);
+            chatBox.scrollTop = chatBox.scrollHeight; // rolling to newest
+        }
+    </script>
 </body>
+
 </html>
