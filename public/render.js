@@ -1,9 +1,4 @@
-/* password */
-const publicHash = "2f1987bf98c09d2f5d2a23a6ae29fa53b9aec8f07ed1330bd439122f5a1a2c2c";
-const reusableHash = "a7a39b72f29718e653e73503210fbb597057b7a1c77d1fe321a1afcff041d4e1";
-
-
-/* hash password generate */
+/* hash 密碼生成 */
 async function hashPassword(password) {
     const encoder = new TextEncoder();
     const data = encoder.encode(password);
@@ -12,33 +7,36 @@ async function hashPassword(password) {
     return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-/* unlock page */
+/* 解鎖頁面 */
 async function unlock() {
     const passwordInput = document.getElementById("password").value;
     const errorMessage = document.getElementById("error-message");
 
     const hashedPassword = await hashPassword(passwordInput);
 
-    if (hashedPassword === reusableHash || hashedPassword === publicHash) {
-        $(".lock").fadeOut(400, async function () {
-            document.getElementById("lock-screen").classList.remove("active");
-            document.getElementById("content").classList.add("active");
-        });
-        await delay(400);
-        $(".unlock").fadeIn(400, async function () {
-            console.log("pass");
-        });
-    } else {
-        errorMessage.style.display = "block";
-    }
+    // 使用密碼作為名稱
+    $(".lock").fadeOut(400, async function () {
+        document.getElementById("lock-screen").classList.remove("active");
+        document.getElementById("content").classList.add("active");
+
+        // 向伺服器發送名稱
+        socket.emit('setNickname', passwordInput);
+    });
+    await delay(400);
+    $(".unlock").fadeIn(400);
 }
 
-/* def delay */
+/* 延遲函數 */
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// def del 
+// 收回訊息
 function retractMessage(messageId) {
     socket.emit('retractMessage', messageId);
 }
+
+// 監聽錯誤訊息
+socket.on('errorMessage', (error) => {
+    alert(error); // 顯示錯誤訊息
+});
