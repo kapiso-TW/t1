@@ -37,7 +37,6 @@ io.on('connection', (socket) => {
             console.log("x");
         } else {
             callback({ success: false });
-            socket.disconnect();
             console.log("fk");
         }
 
