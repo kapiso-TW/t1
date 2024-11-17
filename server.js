@@ -12,7 +12,12 @@ const CHAT_HISTORY_FILE = './chatHistory.json';
 // 初始化聊天記錄
 let chatHistory = [];
 if (fs.existsSync(CHAT_HISTORY_FILE)) {
-    chatHistory = JSON.parse(fs.readFileSync(CHAT_HISTORY_FILE, 'utf-8'));
+    try {
+        chatHistory = JSON.parse(fs.readFileSync(CHAT_HISTORY_FILE, 'utf-8'));
+    } catch (error) {
+        console.error('Error reading chat history file:', error);
+        chatHistory = []; // 如果讀取失敗，初始化為空
+    }
 }
 
 app.use(express.static('public'));
