@@ -8,6 +8,8 @@ function unlock() {
     const errorMessage = document.getElementById("error-message");
 
     const hashedPassword = hashPassword(passwordInput);
+    delay(100);
+    console.log(hashPassword);
 
     // 傳送 hashedPassword 到後端驗證
     socket.emit('setNickname', hashedPassword, async (response) => {

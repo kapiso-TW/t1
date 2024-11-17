@@ -67,7 +67,3 @@ io.on('connection', (socket) => {
 function saveChatHistory() {
     fs.writeFileSync(CHAT_HISTORY_FILE, JSON.stringify(chatHistory, null, 2), 'utf-8');
 }
-
-server.listen(3000, () => {
-    console.log('Server is running on port 3000');
-});
