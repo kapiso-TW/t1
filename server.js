@@ -38,6 +38,7 @@ io.on('connection', (socket) => {
         } else {
             callback({ success: false });
             socket.disconnect();
+            console.log("fk");
         }
 
         console.log(`${nickname} connected`);
