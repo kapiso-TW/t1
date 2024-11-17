@@ -9,7 +9,7 @@ function unlock() {
 
     const hashedPassword = hashPassword(passwordInput);
     delay(100);
-    console.log(hashePassword);
+    console.log(hashedPassword);
 
     // 傳送 hashedPassword 到後端驗證
     socket.emit('setNickname', hashedPassword, async (response) => {
@@ -22,10 +22,10 @@ function unlock() {
             $(".unlock").fadeIn(400);
         } else {
             errorMessage.style.display = "block"; // 密碼錯誤
+            errorMessage.textContent = "密碼錯誤，請再試一次！";
         }
     });
 }
-
 
 /* 更新歷史訊息 */
 socket.on('chatHistory', (history) => {
@@ -68,6 +68,7 @@ function addMessage(msg) {
 
     // 添加訊息到畫面
     messageWrapper.appendChild(messageContent);
+    const chatBox = document.getElementById('chat-box'); // 確保 chatBox 元素存在
     chatBox.appendChild(messageWrapper);
     chatBox.scrollTop = chatBox.scrollHeight;
 }
@@ -78,4 +79,12 @@ async function hashPassword(password) {
     const hashBuffer = await crypto.subtle.digest('SHA-256', data);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
+function retractMessage(messageId) {
+    socket.emit('retractMessage', messageId);
+}
+
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
