@@ -1,4 +1,10 @@
-/* hash 密碼生成 */
+/* password */
+const publicHash = "2f1987bf98c09d2f5d2a23a6ae29fa53b9aec8f07ed1330bd439122f5a1a2c2c";
+const reusableHash = "a7a39b72f29718e653e73503210fbb597057b7a1c77d1fe321a1afcff041d4e1";
+
+const socket = io();
+
+/* hash password generate */
 async function hashPassword(password) {
     const encoder = new TextEncoder();
     const data = encoder.encode(password);
@@ -7,26 +13,31 @@ async function hashPassword(password) {
     return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-/* 解鎖頁面 */
+/* unlock page */
 async function unlock() {
     const passwordInput = document.getElementById("password").value;
     const errorMessage = document.getElementById("error-message");
 
     const hashedPassword = await hashPassword(passwordInput);
 
-    // 使用密碼作為名稱
-    $(".lock").fadeOut(400, async function () {
-        document.getElementById("lock-screen").classList.remove("active");
-        document.getElementById("content").classList.add("active");
+    if (hashedPassword === reusableHash || hashedPassword === publicHash) {
+        $(".lock").fadeOut(400, async function () {
+            document.getElementById("lock-screen").classList.remove("active");
+            document.getElementById("content").classList.add("active");
+        });
+        await delay(400);
+        $(".unlock").fadeIn(400, async function () {
+            console.log("pass");
+        });
 
-        // 向伺服器發送名稱
-        socket.emit('setNickname', passwordInput);
-    });
-    await delay(400);
-    $(".unlock").fadeIn(400);
+        // 傳送使用者名稱到伺服器
+        socket.emit('setNickname', hashedPassword);
+    } else {
+        errorMessage.style.display = "block";
+    }
 }
 
-/* 延遲函數 */
+/* def delay */
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -35,8 +46,3 @@ function delay(ms) {
 function retractMessage(messageId) {
     socket.emit('retractMessage', messageId);
 }
-
-// 監聽錯誤訊息
-socket.on('errorMessage', (error) => {
-    alert(error); // 顯示錯誤訊息
-});
