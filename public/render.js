@@ -3,6 +3,7 @@ const socket = io();
 
 /* 解鎖頁面並傳送使用者名稱 */
 async function unlock() {
+    console.log("try unlocking...");
     const passwordInput = document.getElementById("password").value;
     const errorMessage = document.getElementById("error-message");
 
