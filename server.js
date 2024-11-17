@@ -70,8 +70,14 @@ io.on('connection', (socket) => {
 
 // 儲存聊天記錄到檔案
 function saveChatHistory() {
-    fs.writeFileSync(CHAT_HISTORY_FILE, JSON.stringify(chatHistory, null, 2), 'utf-8');
+    try {
+        fs.writeFileSync(CHAT_HISTORY_FILE, JSON.stringify(chatHistory, null, 2), 'utf-8');
+        console.log('Chat history saved successfully');
+    } catch (error) {
+        console.error('Error saving chat history:', error);
+    }
 }
+
 
 server.listen(3000, () => {
     console.log('Succese turn on');
