@@ -2,24 +2,23 @@ let nickname; // 儲存使用者名稱
 const socket = io();
 
 /* 解鎖頁面並傳送使用者名稱 */
-function unlock() {
+async function unlock() {
     console.log("try unlocking...");
     const passwordInput = document.getElementById("password").value;
     const errorMessage = document.getElementById("error-message");
 
-    const hashedPassword = hashPassword(passwordInput);
-    delay(100);
-    console.log(hashedPassword);
-    console.log("123 su");
+    // 等待异步计算的哈希结果
+    const hashedPassword = await hashPassword(passwordInput);
+    console.log("Hashed password:", hashedPassword); // 这里会输出实际的哈希值，而不是 Promise
 
     // 傳送 hashedPassword 到後端驗證
-    socket.emit('setNickname', hashedPassword, response => {
+    socket.emit('setNickname', hashedPassword, async (response) => {
         if (response.success) {
             $(".lock").fadeOut(400, async function () {
                 document.getElementById("lock-screen").classList.remove("active");
                 document.getElementById("content").classList.add("active");
-            }); 
-            delay(400);
+            });
+            await delay(400);
             $(".unlock").fadeIn(400);
         } else {
             errorMessage.style.display = "block"; // 密碼錯誤
@@ -27,6 +26,7 @@ function unlock() {
         }
     });
 }
+
 
 /* 更新歷史訊息 */
 socket.on('chatHistory', (history) => {
