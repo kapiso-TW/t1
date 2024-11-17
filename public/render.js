@@ -10,6 +10,7 @@ function unlock() {
     const hashedPassword = hashPassword(passwordInput);
     delay(100);
     console.log(hashedPassword);
+    console.log("123 su");
 
     // 傳送 hashedPassword 到後端驗證
     socket.emit('setNickname', hashedPassword, async (response) => {
