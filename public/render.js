@@ -13,13 +13,13 @@ function unlock() {
     console.log("123 su");
 
     // 傳送 hashedPassword 到後端驗證
-    socket.emit('setNickname', hashedPassword, async (response) => {
+    socket.emit('setNickname', hashedPassword, response => {
         if (response.success) {
             $(".lock").fadeOut(400, async function () {
                 document.getElementById("lock-screen").classList.remove("active");
                 document.getElementById("content").classList.add("active");
             }); 
-            await delay(400);
+            delay(400);
             $(".unlock").fadeIn(400);
         } else {
             errorMessage.style.display = "block"; // 密碼錯誤
