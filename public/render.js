@@ -2,12 +2,12 @@ let nickname; // 儲存使用者名稱
 const socket = io();
 
 /* 解鎖頁面並傳送使用者名稱 */
-async function unlock() {
+function unlock() {
     console.log("try unlocking...");
     const passwordInput = document.getElementById("password").value;
     const errorMessage = document.getElementById("error-message");
 
-    const hashedPassword = await hashPassword(passwordInput);
+    const hashedPassword = hashPassword(passwordInput);
 
     // 傳送 hashedPassword 到後端驗證
     socket.emit('setNickname', hashedPassword, async (response) => {
