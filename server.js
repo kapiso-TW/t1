@@ -9,6 +9,8 @@ const io = socketIo(server);
 
 const CHAT_HISTORY_FILE = './chatHistory.json';
 
+let nickname;
+
 // 初始化聊天記錄
 let chatHistory = [];
 if (fs.existsSync(CHAT_HISTORY_FILE)) {
@@ -23,28 +25,28 @@ if (fs.existsSync(CHAT_HISTORY_FILE)) {
 app.use(express.static('public'));
 
 io.on('connection', (socket) => {
-    let nickname;
 
     // 驗證密碼
     socket.on('setNickname', (hashedPassword, callback) => {
         if (hashedPassword === "2f1987bf98c09d2f5d2a23a6ae29fa53b9aec8f07ed1330bd439122f5a1a2c2c") {
             nickname = "Sally";
-            callback({ success: true });
-            console.log("sa success");
+            callback({ success: true, nickname });
+            console.log("Sally authenticated successfully");
         } else if (hashedPassword === "a7a39b72f29718e653e73503210fbb597057b7a1c77d1fe321a1afcff041d4e1") {
             nickname = "XXX";
-            callback({ success: true });
-            console.log("xx success");
+            callback({ success: true, nickname });
+            console.log("XXX authenticated successfully");
         } else {
             callback({ success: false });
-            console.log("fail");
+            console.log("Authentication failed");
         }
-
+    
         console.log(`${nickname} connected`);
-
+    
         // 發送歷史聊天記錄
         socket.emit('chatHistory', chatHistory);
     });
+    
 
     // 接收新訊息
     socket.on('chatMessage', (msg) => {

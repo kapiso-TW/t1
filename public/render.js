@@ -3,17 +3,20 @@ const socket = io();
 
 /* 解鎖頁面並傳送使用者名稱 */
 async function unlock() {
-    console.log("try unlocking...");
+    console.log("Trying to unlock...");
     const passwordInput = document.getElementById("password").value;
     const errorMessage = document.getElementById("error-message");
 
     // 等待异步计算的哈希结果
     const hashedPassword = await hashPassword(passwordInput);
-    console.log("Hashed password:", hashedPassword); // 这里会输出实际的哈希值，而不是 Promise
+    console.log("Hashed password:", hashedPassword); // 输出哈希值
 
     // 傳送 hashedPassword 到後端驗證
     socket.emit('setNickname', hashedPassword, async (response) => {
         if (response.success) {
+            nickname = response.nickname; // 设置前端的 nickname
+            console.log(`Welcome, ${nickname}!`);
+
             $(".lock").fadeOut(400, async function () {
                 document.getElementById("lock-screen").classList.remove("active");
                 document.getElementById("content").classList.add("active");
@@ -50,10 +53,9 @@ function addMessage(msg) {
     messageContent.style = 'font-size: 20px; color: white;';
     messageContent.textContent = msg.text;
 
-    console.log(nickname + 'btncheck');
+    console.log(`Current user: ${nickname}, Message sender: ${msg.sender}`);
     // 如果發送者是當前用戶，顯示收回按鈕
     if (msg.sender === nickname) {
-        console.log(nickname + 'rebtn');
         const deleteButton = document.createElement('button');
         deleteButton.className = 'button';
         deleteButton.style = 'display: flex; align-items: center;';
@@ -64,10 +66,10 @@ function addMessage(msg) {
 
     // 添加訊息到畫面
     messageWrapper.appendChild(messageContent);
-    const chatBox = document.getElementById('chatBox'); // 修正 chatBox 的 ID
+    const chatBox = document.getElementById('chatBox');
     chatBox.appendChild(messageWrapper);
     chatBox.scrollTop = chatBox.scrollHeight; // 滾動到最新訊息
-} 
+}
 
 
 
