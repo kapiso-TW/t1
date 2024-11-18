@@ -50,8 +50,10 @@ function addMessage(msg) {
     messageContent.style = 'font-size: 20px; color: white;';
     messageContent.textContent = msg.text;
 
+    console.log(nickname + 'btncheck');
     // 如果發送者是當前用戶，顯示收回按鈕
     if (msg.sender === nickname) {
+        console.log(nickname + 'rebtn');
         const deleteButton = document.createElement('button');
         deleteButton.className = 'button';
         deleteButton.style = 'display: flex; align-items: center;';
