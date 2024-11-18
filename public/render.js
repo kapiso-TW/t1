@@ -44,7 +44,7 @@ socket.on('chatHistory', (history) => {
 /* 新訊息 */
 socket.on('chatMessage', (msg) => {
     addMessage(msg);
-});
+}); 
 
 /* 收回訊息 */
 socket.on('retractMessage', (messageId) => {
