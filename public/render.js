@@ -54,6 +54,7 @@ socket.on('retractMessage', (messageId) => {
     }
 });
 
+
 /* 添加訊息到畫面 */
 function addMessage(msg) {
     const messageWrapper = document.createElement('div');
