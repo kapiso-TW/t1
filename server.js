@@ -40,13 +40,13 @@ io.on('connection', (socket) => {
             callback({ success: false });
             console.log("Authentication failed");
         }
-    
+
         console.log(`${nickname} connected`);
-    
+
         // 發送歷史聊天記錄
         socket.emit('chatHistory', chatHistory);
     });
-    
+
 
     // 接收新訊息
     socket.on('chatMessage', (msg) => {
@@ -62,11 +62,12 @@ io.on('connection', (socket) => {
     socket.on('retractMessage', (messageId) => {
         const message = chatHistory.find(msg => msg.id === messageId);
         if (message && message.sender === nickname) {
-            chatHistory = chatHistory.filter(msg => msg.id !== messageId); // 從記錄中移除
+            message.retracted = true; // 標記為已收回
             saveChatHistory(); // 儲存更新後的檔案
-            io.emit('retractMessage', messageId); // 廣播刪除
+            io.emit('retractMessage', messageId); // 廣播收回訊息事件
         }
     });
+
 
     socket.on('disconnect', () => {
         console.log(`${nickname} disconnected`);
@@ -82,6 +83,7 @@ function saveChatHistory() {
         console.error('Error saving chat history:', error);
     }
 }
+
 
 
 server.listen(3000, () => {

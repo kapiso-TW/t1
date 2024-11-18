@@ -51,7 +51,14 @@ function addMessage(msg) {
     // 訊息內容
     const messageContent = document.createElement('span');
     messageContent.style = 'font-size: 20px; color: white;';
-    messageContent.textContent = msg.text;
+    
+    // 檢查訊息是否已被收回
+    if (msg.retracted) {
+        messageContent.textContent = '此訊息已被收回'; // 顯示收回提示
+        messageWrapper.classList.add('retracted'); // 標記訊息為已收回
+    } else {
+        messageContent.textContent = msg.text; // 顯示正常訊息
+    }
 
     console.log(`Current user: ${nickname}, Message sender: ${msg.sender}`);
     // 如果發送者是當前用戶，顯示收回按鈕
