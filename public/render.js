@@ -28,6 +28,14 @@ async function unlock() {
 }
 
 
+async function sendmes(){
+    const mess = document.getElementById("messageInput");
+    if( mess != null ){
+        socket.emit('chatMessage', mess );
+        console.log(nickname + 'send a mes');
+    }
+}
+
 /* 更新歷史訊息 */
 socket.on('chatHistory', (history) => {
     history.forEach(msg => addMessage(msg));

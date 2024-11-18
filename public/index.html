@@ -15,7 +15,7 @@
     <!--lock page-->
     <div id="lock-screen" class="container active lock">
         <div class="form-control">
-                <input type="password" required="" id="password">
+            <input type="password" required="" id="password">
             <label>
                 <span style="transition-delay:0ms">P</span><span style="transition-delay:50ms">a</span><span
                     style="transition-delay:100ms">s</span><span style="transition-delay:150ms">s</span><span
@@ -29,7 +29,8 @@
             </label>
         </div>
         <button onclick="unlock()" class="ubt">Unlock</button>
-        <p id="error-message" style="color:rgb(255, 100, 100); display:none; font-size: 20px;">Incorrect password >< </p>
+        <p id="error-message" style="color:rgb(255, 100, 100); display:none; font-size: 20px;">Incorrect password ><
+                </p>
     </div>
     <!--unlock page-->
     <div style="display: flex; justify-content: center; align-items: center;">
@@ -45,7 +46,7 @@
                         <input placeholder="Type Here" type="text" class="textInput" id="messageInput">
                     </div>
                     <div>
-                        <button id="sendButton" style="margin-top: 10px;" class="btn"><i class="animation"></i>Send<i
+                        <button id="sendButton" style="margin-top: 10px;" class="btn" onclick="sendmes()"><i class="animation"></i>Send<i
                                 class="animation"></i>
                         </button>
                     </div>
@@ -58,5 +59,5 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="render.js"></script>
 </body>
-</html>
 
+</html>
