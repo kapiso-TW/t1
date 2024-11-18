@@ -28,32 +28,16 @@ async function unlock() {
 }
 
 
-async function sendmes(){
-    const mess = document.getElementById("messageInput");
-    if( mess != "" ){
-        socket.emit('chatMessage', mess );
-        console.log(nickname + 'send a mes');
+async function sendmes() {
+    const mess = document.getElementById("messageInput").value; // 獲取輸入框的值
+    if (mess.trim() !== "") { // 確保訊息不為空
+        socket.emit('chatMessage', mess); // 發送訊息
+        console.log(`${nickname} sent a message: ${mess}`);
+        document.getElementById("messageInput").value = ""; // 清空輸入框
+    } else {
+        console.log("Message is empty, not sent.");
     }
 }
-
-/* 更新歷史訊息 */
-socket.on('chatHistory', (history) => {
-    history.forEach(msg => addMessage(msg));
-});
-
-/* 新訊息 */
-socket.on('chatMessage', (msg) => {
-    addMessage(msg);
-}); 
-
-/* 收回訊息 */
-socket.on('retractMessage', (messageId) => {
-    const msgElement = document.getElementById(messageId);
-    if (msgElement) {
-        msgElement.textContent = '已被收回';
-    }
-});
-
 
 /* 添加訊息到畫面 */
 function addMessage(msg) {
@@ -78,10 +62,30 @@ function addMessage(msg) {
 
     // 添加訊息到畫面
     messageWrapper.appendChild(messageContent);
-    const chatBox = document.getElementById('chat-box'); // 確保 chatBox 元素存在
+    const chatBox = document.getElementById('chatBox'); // 修正 chatBox 的 ID
     chatBox.appendChild(messageWrapper);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    chatBox.scrollTop = chatBox.scrollHeight; // 滾動到最新訊息
 }
+
+
+/* 更新歷史訊息 */
+socket.on('chatHistory', (history) => {
+    history.forEach(msg => addMessage(msg));
+});
+
+/* 新訊息 */
+socket.on('chatMessage', (msg) => {
+    addMessage(msg);
+}); 
+
+/* 收回訊息 */
+socket.on('retractMessage', (messageId) => {
+    const msgElement = document.getElementById(messageId);
+    if (msgElement) {
+        msgElement.textContent = '已被收回';
+    }
+});
+
 
 async function hashPassword(password) {
     const encoder = new TextEncoder();

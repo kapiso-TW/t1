@@ -48,12 +48,13 @@ io.on('connection', (socket) => {
 
     // 接收新訊息
     socket.on('chatMessage', (msg) => {
-        const messageId = `${Date.now()}-${Math.random()}`; // 簡單生成唯一ID
+        const messageId = `${Date.now()}-${Math.random()}`; // 生成唯一 ID
         const userMessage = { id: messageId, text: `${nickname}: ${msg}`, sender: nickname };
         chatHistory.push(userMessage);
         saveChatHistory(); // 儲存到檔案
-        io.emit('chatMessage', userMessage);
+        io.emit('chatMessage', userMessage); // 廣播給所有用戶
     });
+
 
     // 收回訊息
     socket.on('retractMessage', (messageId) => {
