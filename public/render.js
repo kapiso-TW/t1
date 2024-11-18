@@ -30,7 +30,7 @@ async function unlock() {
 
 async function sendmes(){
     const mess = document.getElementById("messageInput");
-    if( mess != null ){
+    if( mess != "" ){
         socket.emit('chatMessage', mess );
         console.log(nickname + 'send a mes');
     }
