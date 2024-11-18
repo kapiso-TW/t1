@@ -30,14 +30,14 @@ io.on('connection', (socket) => {
         if (hashedPassword === "2f1987bf98c09d2f5d2a23a6ae29fa53b9aec8f07ed1330bd439122f5a1a2c2c") {
             nickname = "Sally";
             callback({ success: true });
-            console.log("sa");
+            console.log("sa success");
         } else if (hashedPassword === "a7a39b72f29718e653e73503210fbb597057b7a1c77d1fe321a1afcff041d4e1") {
             nickname = "XXX";
             callback({ success: true });
-            console.log("x");
+            console.log("xx success");
         } else {
             callback({ success: false });
-            console.log("fk");
+            console.log("fail");
         }
 
         console.log(`${nickname} connected`);

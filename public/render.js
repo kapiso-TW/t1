@@ -39,7 +39,7 @@ async function sendmes() {
     }
 }
 
-/* 添加訊息到畫面 */
+
 function addMessage(msg) {
     const messageWrapper = document.createElement('div');
     messageWrapper.id = msg.id;
@@ -50,22 +50,26 @@ function addMessage(msg) {
     messageContent.style = 'font-size: 20px; color: white;';
     messageContent.textContent = msg.text;
 
-    // 收回按鈕（僅顯示給訊息的發送者）
+    // 如果發送者是當前用戶，顯示收回按鈕
     if (msg.sender === nickname) {
         const deleteButton = document.createElement('button');
         deleteButton.className = 'button';
         deleteButton.style = 'display: flex; align-items: center;';
-        deleteButton.innerHTML = '<svg viewBox="0 0 448 512" class="svgIcon" style="width: 20px; height: 20px; fill: currentColor;"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path></svg>';
+        deleteButton.innerHTML = `
+            <svg viewBox="0 0 448 512" class="svgIcon" style="width: 20px; height: 20px; fill: currentColor;">
+                <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
+            </svg>`;
         deleteButton.onclick = () => retractMessage(msg.id); // 綁定收回事件
         messageWrapper.appendChild(deleteButton);
     }
 
     // 添加訊息到畫面
     messageWrapper.appendChild(messageContent);
-    const chatBox = document.getElementById('chatBox'); // 修正 chatBox 的 ID 
+    const chatBox = document.getElementById('chatBox'); // 修正 chatBox 的 ID
     chatBox.appendChild(messageWrapper);
     chatBox.scrollTop = chatBox.scrollHeight; // 滾動到最新訊息
 }
+
 
 
 /* 更新歷史訊息 */
