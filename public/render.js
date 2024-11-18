@@ -62,7 +62,7 @@ function addMessage(msg) {
 
     // 添加訊息到畫面
     messageWrapper.appendChild(messageContent);
-    const chatBox = document.getElementById('chatBox'); // 修正 chatBox 的 ID
+    const chatBox = document.getElementById('chatBox'); // 修正 chatBox 的 ID 
     chatBox.appendChild(messageWrapper);
     chatBox.scrollTop = chatBox.scrollHeight; // 滾動到最新訊息
 }
