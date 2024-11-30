@@ -495,3 +495,62 @@ body {
   align-items: flex-end;
   margin: 0;
 }
+
+.chat-container {
+  width: 400px;
+  width: calc(100%);
+  border-radius: 10px 10px 0 0;
+  overflow: hidden;
+  background: #1c1c1c;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+}
+
+.chat-box {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  /*background: url('https://live.staticflickr.com/4753/25790223907_9ea3e63180_b.jpg') no-repeat center center;*/
+  background-size: cover;
+  flex-grow: 1;
+  padding: 10px;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 10px;
+  max-height: calc(100vh - 200px);
+}
+
+.input-area {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background: #1c1c1c;
+  border-top: 1px solid #333;
+  border-radius: 0 0 10px 10px;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  resize: none;
+  font-size: 14px;
+}
+
+.send {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #00aaff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.send:hover {
+  background-color: #0077cc;
+}
