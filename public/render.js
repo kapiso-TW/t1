@@ -46,7 +46,7 @@ async function sendmes() {
 function addMessage(msg) {
     const messageWrapper = document.createElement('div');
     messageWrapper.id = msg.id;
-    messageWrapper.className = msg.sender === nickname ? 'message-self' : 'message-post'; // 根據發送者添加對應的 class
+    messageWrapper.className = msg.sender === nickname ? 'message-self' : 'message-post';
 
     // 發送者名稱
     const senderName = document.createElement('div');
@@ -57,39 +57,41 @@ function addMessage(msg) {
     const messageContent = document.createElement('div');
     messageContent.className = msg.sender === nickname ? 'text-self' : 'text';
     if (msg.retracted) {
-        messageContent.textContent = '[訊息已收回]'; // 顯示收回提示
-        messageContent.classList.add('retracted'); // 加上收回的樣式 class
+        messageContent.textContent = '[訊息已收回]';
+        messageContent.classList.add('retracted');
     } else {
-        messageContent.textContent = msg.text || 'No message'; // 顯示正常訊息
+        messageContent.textContent = msg.text || 'No message';
     }
 
     // 收回按鈕 (僅當前用戶的訊息顯示)
     if (msg.sender === nickname && !msg.retracted) {
+        const deleteForm = document.createElement('form');
+        deleteForm.action = "#"; // 可以根據需求設定 action
+        deleteForm.method = "post"; // 可以根據需求設定 method
+
         const hiddenInput = document.createElement('input');
         hiddenInput.type = 'hidden';
         hiddenInput.name = 'time';
-        hiddenInput.value = msg.time; // 假設 msg 包含 time 屬性
+        hiddenInput.value = msg.time;
         deleteForm.appendChild(hiddenInput);
 
         const deleteButton = document.createElement('button');
         deleteButton.type = 'submit';
         deleteButton.textContent = '收回';
-        deleteButton.className = 'button recall-button'; // 添加專屬 class
+        deleteButton.className = 'button recall-button';
         deleteForm.appendChild(deleteButton);
 
-        // 將表單添加到訊息框
         messageWrapper.appendChild(deleteForm);
     }
 
-    // 按照 PHP 的物件順序插入元素
-    messageWrapper.appendChild(senderName); // 名稱
-    messageWrapper.appendChild(messageContent); // 訊息內容
+    messageWrapper.appendChild(senderName);
+    messageWrapper.appendChild(messageContent);
 
-    // 添加訊息到畫面
     const chatBox = document.getElementById('chatBox');
     chatBox.appendChild(messageWrapper);
-    chatBox.scrollTop = chatBox.scrollHeight; // 滾動到最新訊息
+    chatBox.scrollTop = chatBox.scrollHeight;
 }
+
 
 /* 更新歷史訊息 */
 socket.on('chatHistory', (history) => {
