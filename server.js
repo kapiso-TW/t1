@@ -9,8 +9,6 @@ const io = socketIo(server);
 
 const CHAT_HISTORY_FILE = './chatHistory.json';
 
-let nickname;
-
 // 初始化聊天記錄
 let chatHistory = [];
 if (fs.existsSync(CHAT_HISTORY_FILE)) {
@@ -18,59 +16,61 @@ if (fs.existsSync(CHAT_HISTORY_FILE)) {
         chatHistory = JSON.parse(fs.readFileSync(CHAT_HISTORY_FILE, 'utf-8'));
     } catch (error) {
         console.error('Error reading chat history file:', error);
-        chatHistory = []; // 如果讀取失敗，初始化為空
+        chatHistory = [];
     }
 }
 
 app.use(express.static('public'));
 
 io.on('connection', (socket) => {
+    console.log('A user connected');
 
-    // 驗證密碼
+    // 驗證密碼並設置用戶暱稱
     socket.on('setNickname', (hashedPassword, callback) => {
         if (hashedPassword === "2f1987bf98c09d2f5d2a23a6ae29fa53b9aec8f07ed1330bd439122f5a1a2c2c") {
-            nickname = "Sally";
-            callback({ success: true, nickname });
-            console.log("Sally authenticated successfully");
+            socket.nickname = "Sally";
         } else if (hashedPassword === "a7a39b72f29718e653e73503210fbb597057b7a1c77d1fe321a1afcff041d4e1") {
-            nickname = "XXX";
-            callback({ success: true, nickname });
-            console.log("XXX authenticated successfully");
+            socket.nickname = "XXX";
         } else {
             callback({ success: false });
             console.log("Authentication failed");
+            return;
         }
 
-        console.log(`${nickname} connected`);
+        callback({ success: true, nickname: socket.nickname });
+        console.log(`${socket.nickname} authenticated successfully`);
 
         // 發送歷史聊天記錄
         socket.emit('chatHistory', chatHistory);
     });
 
-
     // 接收新訊息
     socket.on('chatMessage', (msg) => {
         const messageId = `${Date.now()}-${Math.random()}`; // 生成唯一 ID
-        const userMessage = { id: messageId, text: `${nickname}: ${msg}`, sender: nickname };
+        const userMessage = { 
+            id: messageId, 
+            text: msg, 
+            sender: socket.nickname, 
+            timestamp: new Date().toISOString(), 
+            retracted: false 
+        };
         chatHistory.push(userMessage);
         saveChatHistory(); // 儲存到檔案
         io.emit('chatMessage', userMessage); // 廣播給所有用戶
     });
 
-
     // 收回訊息
     socket.on('retractMessage', (messageId) => {
         const message = chatHistory.find(msg => msg.id === messageId);
-        if (message && message.sender === nickname) {
+        if (message && message.sender === socket.nickname) {
             message.retracted = true; // 標記為已收回
             saveChatHistory(); // 儲存更新後的檔案
             io.emit('retractMessage', messageId); // 廣播收回訊息事件
         }
     });
 
-
     socket.on('disconnect', () => {
-        console.log(`${nickname} disconnected`);
+        console.log(`${socket.nickname || 'Unknown user'} disconnected`);
     });
 });
 
@@ -84,8 +84,6 @@ function saveChatHistory() {
     }
 }
 
-
-
 server.listen(3000, () => {
-    console.log('Succese turn on');
+    console.log('Server is running on http://localhost:3000');
 });
