@@ -42,7 +42,6 @@ async function sendmes() {
     }
 }
 
-
 function addMessage(msg) {
     const messageWrapper = document.createElement('div');
     messageWrapper.id = msg.id;
@@ -53,9 +52,9 @@ function addMessage(msg) {
     senderName.className = msg.sender === nickname ? 'name-self' : 'name';
     senderName.textContent = msg.sender;
 
-    // 建立一個包含訊息內容的容器
+    // 訊息內容容器 (包裹用戶訊息)
     const messageContainer = document.createElement('div');
-    messageContainer.style.textAlign = 'left'; // 設定文字靠左對齊
+    messageContainer.style.textAlign = 'left'; // 設定文字對齊方式
 
     // 訊息內容
     const messageContent = document.createElement('div');
@@ -67,10 +66,10 @@ function addMessage(msg) {
         messageContent.textContent = msg.text || 'No message';
     }
 
-    // 將訊息內容加入容器
+    // 將訊息內容包裹在容器中
     messageContainer.appendChild(messageContent);
 
-    // 將名稱和容器加入到訊息包裝器中
+    // 將發送者名稱和包裹的訊息容器添加到訊息包裹器中
     messageWrapper.appendChild(senderName);
     messageWrapper.appendChild(messageContainer);
 
@@ -81,9 +80,9 @@ function addMessage(msg) {
     // 收回按鈕 (僅當前用戶的訊息顯示)
     if (msg.sender === nickname && !msg.retracted) {
         const deleteButton = document.createElement('button');
-        deleteButton.type = 'button'; // 按鈕類型改為 'button'
+        deleteButton.type = 'button';
         deleteButton.textContent = '收回';
-        deleteButton.className = 'recall-button'; // 添加專屬 class
+        deleteButton.className = 'recall-button';
 
         // 為按鈕綁定事件處理函數來發送收回訊息的請求
         deleteButton.onclick = () => {
