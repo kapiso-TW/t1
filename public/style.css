@@ -359,7 +359,7 @@ body {
 .message-post {
   border-radius: 15px;
   margin: 15px 0;
-  padding: 15px;
+  padding: 0 0 0 15px;
   max-width: 80%;
   word-wrap: break-word;
   position: relative;
@@ -394,7 +394,7 @@ body {
   flex-direction: column;
   align-items: flex-end;
   border-radius: 15px;
-  padding: 15px;
+  padding: 0 15px 0 0;
   margin: 15px 0;
   max-width: 80%;
   word-wrap: break-word;
