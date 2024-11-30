@@ -69,6 +69,18 @@
 
     <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
     <script src="render.js"></script>
+    <script>
+        document.body.addEventListener('touchmove', function (event) {
+            if (!chatBox.contains(event.target)) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+    
+        const chatBox = document.querySelector('.chat-container');
+        chatBox.addEventListener('touchmove', function (event) {
+            event.stopPropagation();
+        }, { passive: false });
+    </script>
 </body>
 
 </html>

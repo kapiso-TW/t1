@@ -433,13 +433,6 @@ body {
   position: relative;
 }
 
-.text-form {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  margin: 0;
-}
-
 .chat-container {
   width: 400px;
   width: calc(100%);
@@ -450,19 +443,8 @@ body {
   display: flex;
   flex-direction: column;
   height: 500px;
-}
-
-.chat-box {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  /*background: url('https://live.staticflickr.com/4753/25790223907_9ea3e63180_b.jpg') no-repeat center center;*/
-  background-size: cover;
-  flex-grow: 1;
-  padding: 10px;
-  color: #fff;
-  font-size: 14px;
-  border-radius: 10px;
-  max-height: calc(100vh - 200px);
 }
 
 .input-area {
@@ -472,17 +454,6 @@ body {
   background: #1c1c1c;
   border-top: 1px solid #333;
   border-radius: 0 0 10px 10px;
-}
-
-textarea {
-  width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #333;
-  color: #fff;
-  border: none;
-  resize: none;
-  font-size: 14px;
 }
 
 .send {
