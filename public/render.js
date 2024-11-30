@@ -101,10 +101,13 @@ socket.on('chatMessage', (msg) => {
 socket.on('retractMessage', (messageId) => {
     const msgElement = document.getElementById(messageId);
     if (msgElement) {
-        msgElement.textContent = '已被收回';
+        // 找到訊息內容的部分並修改其文字
+        const messageContent = msgElement.querySelector('.text, .text-self');
+        if (messageContent) {
+            messageContent.textContent = '已被收回';
+        }
     }
 });
-
 
 async function hashPassword(password) {
     const encoder = new TextEncoder();
