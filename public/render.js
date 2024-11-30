@@ -63,6 +63,13 @@ function addMessage(msg) {
         messageContent.textContent = msg.text || 'No message';
     }
 
+    messageWrapper.appendChild(senderName);
+    messageWrapper.appendChild(messageContent);
+
+    const chatBox = document.getElementById('chatBox');
+    chatBox.appendChild(messageWrapper);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
     // 收回按鈕 (僅當前用戶的訊息顯示)
     if (msg.sender === nickname && !msg.retracted) {
         const deleteButton = document.createElement('button');
@@ -77,13 +84,6 @@ function addMessage(msg) {
 
         messageWrapper.appendChild(deleteButton);
     }
-
-    messageWrapper.appendChild(senderName);
-    messageWrapper.appendChild(messageContent);
-
-    const chatBox = document.getElementById('chatBox');
-    chatBox.appendChild(messageWrapper);
-    chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 
