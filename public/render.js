@@ -52,17 +52,24 @@ function addMessage(msg) {
     const messageContent = document.createElement('span');
     messageContent.style = 'font-size: 20px; color: white;';
     
-    // 檢查訊息是否已被收回
     if (msg.retracted) {
-        messageContent.textContent = '此訊息已被收回'; // 顯示收回提示
-        messageWrapper.classList.add('retracted'); // 標記訊息為已收回
+        // 訊息已收回
+        messageContent.textContent = '[訊息已收回]'; // 顯示收回提示
+        messageContent.style.color = 'gray'; // 改變顏色以顯示收回狀態
+        messageWrapper.classList.add('retracted');
     } else {
-        messageContent.textContent = msg.text; // 顯示正常訊息
+        // 正常訊息
+        messageContent.textContent = msg.text || 'No message'; // 檢查是否有訊息
     }
 
+    // 發送者名稱
+    const senderName = document.createElement('div');
+    senderName.style = 'font-weight: bold; color: lightblue;';
+    senderName.textContent = msg.sender;
+
     console.log(`Current user: ${nickname}, Message sender: ${msg.sender}`);
-    // 如果發送者是當前用戶，顯示收回按鈕
     if (msg.sender === nickname) {
+        // 如果是自己發送的訊息，顯示收回按鈕
         const deleteButton = document.createElement('button');
         deleteButton.className = 'button';
         deleteButton.style = 'display: flex; align-items: center;';
@@ -71,12 +78,23 @@ function addMessage(msg) {
         messageWrapper.appendChild(deleteButton);
     }
 
+    // 根據訊息狀態調整樣式
+    if (msg.sender === nickname) {
+        messageWrapper.style.justifyContent = 'flex-end'; // 自己的訊息靠右對齊
+        messageContent.style.backgroundColor = 'lightgreen'; // 自己訊息背景顏色
+    } else {
+        messageWrapper.style.justifyContent = 'flex-start'; // 別人的訊息靠左對齊
+        messageContent.style.backgroundColor = 'lightblue'; // 別人訊息背景顏色
+    }
+
     // 添加訊息到畫面
+    messageWrapper.appendChild(senderName);
     messageWrapper.appendChild(messageContent);
     const chatBox = document.getElementById('chatBox');
     chatBox.appendChild(messageWrapper);
     chatBox.scrollTop = chatBox.scrollHeight; // 滾動到最新訊息 
 }
+
 
 
 
