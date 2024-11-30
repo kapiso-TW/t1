@@ -55,7 +55,7 @@ function addMessage(msg) {
 
     // 訊息內容
     const messageContent = document.createElement('div');
-    messageContent.className = 'text';
+    messageContent.className = msg.sender === nickname ? 'text-self' : 'text';
     if (msg.retracted) {
         messageContent.textContent = '[訊息已收回]'; // 顯示收回提示
         messageContent.classList.add('retracted'); // 加上收回的樣式 class
@@ -63,26 +63,33 @@ function addMessage(msg) {
         messageContent.textContent = msg.text || 'No message'; // 顯示正常訊息
     }
 
-    // 如果是自己發送的訊息，顯示收回按鈕
-    if (msg.sender === nickname) {
+    // 收回按鈕 (僅當前用戶的訊息顯示)
+    if (msg.sender === nickname && !msg.retracted) {
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'time';
+        hiddenInput.value = msg.time; // 假設 msg 包含 time 屬性
+        deleteForm.appendChild(hiddenInput);
+
         const deleteButton = document.createElement('button');
+        deleteButton.type = 'submit';
+        deleteButton.textContent = '收回';
         deleteButton.className = 'button recall-button'; // 添加專屬 class
-        deleteButton.innerHTML = '<svg viewBox="0 0 448 512" class="recall-icon"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path></svg>';
-        deleteButton.onclick = () => retractMessage(msg.id); // 綁定收回事件
-        messageWrapper.appendChild(deleteButton);
+        deleteForm.appendChild(deleteButton);
+
+        // 將表單添加到訊息框
+        messageWrapper.appendChild(deleteForm);
     }
 
+    // 按照 PHP 的物件順序插入元素
+    messageWrapper.appendChild(senderName); // 名稱
+    messageWrapper.appendChild(messageContent); // 訊息內容
+
     // 添加訊息到畫面
-    messageWrapper.appendChild(senderName);
-    messageWrapper.appendChild(messageContent);
     const chatBox = document.getElementById('chatBox');
     chatBox.appendChild(messageWrapper);
     chatBox.scrollTop = chatBox.scrollHeight; // 滾動到最新訊息
 }
-
-
-
-
 
 /* 更新歷史訊息 */
 socket.on('chatHistory', (history) => {
