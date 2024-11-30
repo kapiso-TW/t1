@@ -53,6 +53,10 @@ function addMessage(msg) {
     senderName.className = msg.sender === nickname ? 'name-self' : 'name';
     senderName.textContent = msg.sender;
 
+    // 建立一個包含訊息內容的容器
+    const messageContainer = document.createElement('div');
+    messageContainer.style.textAlign = 'left'; // 設定文字靠左對齊
+
     // 訊息內容
     const messageContent = document.createElement('div');
     messageContent.className = msg.sender === nickname ? 'text-self' : 'text';
@@ -63,8 +67,12 @@ function addMessage(msg) {
         messageContent.textContent = msg.text || 'No message';
     }
 
+    // 將訊息內容加入容器
+    messageContainer.appendChild(messageContent);
+
+    // 將名稱和容器加入到訊息包裝器中
     messageWrapper.appendChild(senderName);
-    messageWrapper.appendChild(messageContent);
+    messageWrapper.appendChild(messageContainer);
 
     const chatBox = document.getElementById('chatBox');
     chatBox.appendChild(messageWrapper);
@@ -85,7 +93,6 @@ function addMessage(msg) {
         messageWrapper.appendChild(deleteButton);
     }
 }
-
 
 /* 更新歷史訊息 */
 socket.on('chatHistory', (history) => {
