@@ -65,23 +65,17 @@ function addMessage(msg) {
 
     // 收回按鈕 (僅當前用戶的訊息顯示)
     if (msg.sender === nickname && !msg.retracted) {
-        const deleteForm = document.createElement('form');
-        deleteForm.action = "#"; // 可以根據需求設定 action
-        deleteForm.method = "post"; // 可以根據需求設定 method
-
-        const hiddenInput = document.createElement('input');
-        hiddenInput.type = 'hidden';
-        hiddenInput.name = 'time';
-        hiddenInput.value = msg.time;
-        deleteForm.appendChild(hiddenInput);
-
         const deleteButton = document.createElement('button');
-        deleteButton.type = 'submit';
+        deleteButton.type = 'button'; // 按鈕類型改為 'button'
         deleteButton.textContent = '收回';
-        deleteButton.className = 'button recall-button';
-        deleteForm.appendChild(deleteButton);
+        deleteButton.className = 'button recall-button'; // 添加專屬 class
 
-        messageWrapper.appendChild(deleteForm);
+        // 為按鈕綁定事件處理函數來發送收回訊息的請求
+        deleteButton.onclick = () => {
+            retractMessage(msg.id);
+        };
+
+        messageWrapper.appendChild(deleteButton);
     }
 
     messageWrapper.appendChild(senderName);
