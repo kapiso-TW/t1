@@ -95,7 +95,6 @@ function addMessage(msg) {
     }
 }
 
-
 /* 更新歷史訊息 */
 socket.on('chatHistory', (history) => {
     history.forEach(msg => addMessage(msg));
