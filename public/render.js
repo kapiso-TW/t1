@@ -46,45 +46,30 @@ async function sendmes() {
 function addMessage(msg) {
     const messageWrapper = document.createElement('div');
     messageWrapper.id = msg.id;
-    messageWrapper.style = 'display: flex; gap: 10px; align-items: center; justify-content: center; margin-bottom: 10px;';
-
-    // 訊息內容
-    const messageContent = document.createElement('span');
-    messageContent.style = 'font-size: 20px; color: white;';
-    
-    if (msg.retracted) {
-        // 訊息已收回
-        messageContent.textContent = '[訊息已收回]'; // 顯示收回提示
-        messageContent.style.color = 'gray'; // 改變顏色以顯示收回狀態
-        messageWrapper.classList.add('retracted');
-    } else {
-        // 正常訊息
-        messageContent.textContent = msg.text || 'No message'; // 檢查是否有訊息
-    }
+    messageWrapper.className = msg.sender === nickname ? 'message-self' : 'message-post'; // 根據發送者添加對應的 class
 
     // 發送者名稱
     const senderName = document.createElement('div');
-    senderName.style = 'font-weight: bold; color: lightblue;';
+    senderName.className = msg.sender === nickname ? 'name-self' : 'name';
     senderName.textContent = msg.sender;
 
-    console.log(`Current user: ${nickname}, Message sender: ${msg.sender}`);
-    if (msg.sender === nickname) {
-        // 如果是自己發送的訊息，顯示收回按鈕
-        const deleteButton = document.createElement('button');
-        deleteButton.className = 'button';
-        deleteButton.style = 'display: flex; align-items: center;';
-        deleteButton.innerHTML = '<svg viewBox="0 0 448 512" style="width: 20px; height: 20px; fill: currentColor;"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path></svg>';
-        deleteButton.onclick = () => retractMessage(msg.id); // 綁定收回事件
-        messageWrapper.appendChild(deleteButton);
+    // 訊息內容
+    const messageContent = document.createElement('div');
+    messageContent.className = 'text';
+    if (msg.retracted) {
+        messageContent.textContent = '[訊息已收回]'; // 顯示收回提示
+        messageContent.classList.add('retracted'); // 加上收回的樣式 class
+    } else {
+        messageContent.textContent = msg.text || 'No message'; // 顯示正常訊息
     }
 
-    // 根據訊息狀態調整樣式
+    // 如果是自己發送的訊息，顯示收回按鈕
     if (msg.sender === nickname) {
-        messageWrapper.style.justifyContent = 'flex-end'; // 自己的訊息靠右對齊
-        messageContent.style.backgroundColor = 'lightgreen'; // 自己訊息背景顏色
-    } else {
-        messageWrapper.style.justifyContent = 'flex-start'; // 別人的訊息靠左對齊
-        messageContent.style.backgroundColor = 'lightblue'; // 別人訊息背景顏色
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'button recall-button'; // 添加專屬 class
+        deleteButton.innerHTML = '<svg viewBox="0 0 448 512" class="recall-icon"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path></svg>';
+        deleteButton.onclick = () => retractMessage(msg.id); // 綁定收回事件
+        messageWrapper.appendChild(deleteButton);
     }
 
     // 添加訊息到畫面
@@ -92,8 +77,9 @@ function addMessage(msg) {
     messageWrapper.appendChild(messageContent);
     const chatBox = document.getElementById('chatBox');
     chatBox.appendChild(messageWrapper);
-    chatBox.scrollTop = chatBox.scrollHeight; // 滾動到最新訊息 
+    chatBox.scrollTop = chatBox.scrollHeight; // 滾動到最新訊息
 }
+
 
 
 
