@@ -1,5 +1,6 @@
+const socket = io(); // 必须在任何对 socket 的使用之前声明
+
 let nickname; // 儲存使用者名稱
-const socket = io();
 
 /* 解鎖頁面並傳送使用者名稱 */
 async function unlock() {
@@ -29,7 +30,6 @@ async function unlock() {
         }
     });
 }
-
 
 async function sendmes() {
     const mess = document.getElementById("messageInput").value; // 獲取輸入框的值
