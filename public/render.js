@@ -53,25 +53,27 @@ function addMessage(msg) {
     senderName.textContent = msg.sender;
 
     // 訊息內容容器 (包裹用戶訊息)
-    const messageContainer = document.createElement('div');
-    messageContainer.style.textAlign = 'left'; // 設定文字對齊方式
+    const messageContentWrapper = document.createElement('div');
+    messageContentWrapper.className = msg.sender === nickname ? 'text-self' : 'text';
 
-    // 訊息內容
-    const messageContent = document.createElement('div');
-    messageContent.className = msg.sender === nickname ? 'text-self' : 'text';
+    // 訊息內部容器，設定文字對齊方式
+    const messageContentInner = document.createElement('div');
+    messageContentInner.style.textAlign = 'left';
+
+    // 設定訊息內容
     if (msg.retracted) {
-        messageContent.textContent = '[訊息已收回]';
-        messageContent.classList.add('retracted');
+        messageContentInner.textContent = '[訊息已收回]';
+        messageContentInner.classList.add('retracted');
     } else {
-        messageContent.textContent = msg.text || 'No message';
+        messageContentInner.textContent = msg.text || 'No message';
     }
 
-    // 將訊息內容包裹在容器中
-    messageContainer.appendChild(messageContent);
+    // 將內部容器加到訊息內容容器中
+    messageContentWrapper.appendChild(messageContentInner);
 
-    // 將發送者名稱和包裹的訊息容器添加到訊息包裹器中
+    // 將發送者名稱和訊息內容容器加到訊息包裹器中
     messageWrapper.appendChild(senderName);
-    messageWrapper.appendChild(messageContainer);
+    messageWrapper.appendChild(messageContentWrapper);
 
     const chatBox = document.getElementById('chatBox');
     chatBox.appendChild(messageWrapper);
@@ -92,6 +94,7 @@ function addMessage(msg) {
         messageWrapper.appendChild(deleteButton);
     }
 }
+
 
 /* 更新歷史訊息 */
 socket.on('chatHistory', (history) => {
