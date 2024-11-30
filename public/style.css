@@ -333,13 +333,13 @@ body {
   color: white;
 }
 
-#messageInput:focus~#sendButton svg path,
-#messageInput:valid~#sendButton svg path {
+#messageInput:focus~#send-btn svg path,
+#messageInput:valid~#send-btn svg path {
   fill: #3c3c3c;
   stroke: white;
 }
 
-#sendButton {
+#send-btn {
   width: fit-content;
   height: 100%;
   background-color: transparent;
@@ -352,16 +352,16 @@ body {
   transition: all 0.3s;
 }
 
-#sendButton svg {
+#send-btn svg {
   height: 18px;
   transition: all 0.3s;
 }
 
-#sendButton svg path {
+#send-btn svg path {
   transition: all 0.3s;
 }
 
-#sendButton:hover svg path {
+#send-btn:hover svg path {
   fill: #3c3c3c;
   stroke: white;
 }
