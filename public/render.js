@@ -75,7 +75,7 @@ function addMessage(msg) {
         const deleteButton = document.createElement('button');
         deleteButton.type = 'button'; // 按鈕類型改為 'button'
         deleteButton.textContent = '收回';
-        deleteButton.className = 'button recall-button'; // 添加專屬 class
+        deleteButton.className = 'recall-button'; // 添加專屬 class
 
         // 為按鈕綁定事件處理函數來發送收回訊息的請求
         deleteButton.onclick = () => {
@@ -105,6 +105,11 @@ socket.on('retractMessage', (messageId) => {
         const messageContent = msgElement.querySelector('.text, .text-self');
         if (messageContent) {
             messageContent.textContent = '已被收回';
+        }
+
+        const retractButton = msgElement.querySelector('.recall-button');
+        if (retractButton) {
+            retractButton.remove();
         }
     }
 });

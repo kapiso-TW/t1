@@ -387,7 +387,7 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   position: relative;
   margin-right: auto;
-  color: #000000;
+  color: #ffffff;
 }
 
 .name {
@@ -435,6 +435,7 @@ body {
 
 .chat-container {
   width: 400px;
+  max-width: 400px;
   width: calc(100%);
   border-radius: 10px 10px 0 0;
   overflow: hidden;
