@@ -422,7 +422,7 @@ body {
 }
 
 .chat-container {
-  max-width: 300px;
+  max-width: 334px;
   width: calc(100%);
   border-radius: 10px 10px 0 0;
   overflow: hidden;
